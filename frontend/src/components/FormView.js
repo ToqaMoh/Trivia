@@ -11,7 +11,7 @@ class FormView extends Component {
       answer: "",
       difficulty: 1,
       category: 1,
-      categories: {}
+      categories: []
     }
   }
 
@@ -20,6 +20,7 @@ class FormView extends Component {
       url: `/categories`, //TODO: update request URL
       type: "GET",
       success: (result) => {
+        debugger
         this.setState({ categories: result.categories })
         return;
       },
@@ -70,15 +71,15 @@ class FormView extends Component {
         <form className="form-view" id="add-question-form" onSubmit={this.submitQuestion}>
           <label>
             Question
-            <input type="text" name="question" onChange={this.handleChange}/>
+            <input type="text" name="question" onChange={this.handleChange} required/>
           </label>
           <label>
             Answer
-            <input type="text" name="answer" onChange={this.handleChange}/>
+            <input type="text" name="answer" onChange={this.handleChange} required/>
           </label>
           <label>
             Difficulty
-            <select name="difficulty" onChange={this.handleChange}>
+            <select name="difficulty" onChange={this.handleChange} required>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -88,10 +89,10 @@ class FormView extends Component {
           </label>
           <label>
             Category
-            <select name="category" onChange={this.handleChange}>
-              {Object.keys(this.state.categories).map(id => {
+            <select name="category" onChange={this.handleChange} required>
+              {this.state.categories.map(c => {
                   return (
-                    <option key={id} value={id}>{this.state.categories[id]}</option>
+                    <option key={c.id} value={c.id}>{c.type}</option>
                   )
                 })}
             </select>

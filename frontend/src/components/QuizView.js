@@ -12,7 +12,7 @@ class QuizView extends Component {
         quizCategory: null,
         previousQuestions: [], 
         showAnswer: false,
-        categories: {},
+        categories: [],
         numCorrect: 0,
         currentQuestion: {},
         guess: '',
@@ -71,7 +71,8 @@ class QuizView extends Component {
         return;
       },
       error: (error) => {
-        alert('Unable to load question. Please try your request again')
+        console.log('Error')
+        //alert('Unable to load question. Please try your request again')
         return;
       }
     })
@@ -105,14 +106,14 @@ class QuizView extends Component {
               <div className="choose-header">Choose Category</div>
               <div className="category-holder">
                   <div className="play-category" onClick={this.selectCategory}>ALL</div>
-                  {Object.keys(this.state.categories).map(id => {
+                  {this.state.categories.map(c => {
                   return (
                     <div
-                      key={id}
-                      value={id}
+                      key={c.id}
+                      value={c.type}
                       className="play-category"
-                      onClick={() => this.selectCategory({type:this.state.categories[id], id})}>
-                      {this.state.categories[id]}
+                      onClick={() => this.selectCategory({type:c.type, id:c.id})}>
+                      {c.type}
                     </div>
                   )
                 })}
@@ -132,7 +133,7 @@ class QuizView extends Component {
 
   evaluateAnswer = () => {
     const formatGuess = this.state.guess.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase()
-    const answerArray = this.state.currentQuestion.answer.toLowerCase().split(' ');
+    const answerArray = this.state.currentQuestion.answer.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase();
     return answerArray.includes(formatGuess)
   }
 
@@ -150,9 +151,7 @@ class QuizView extends Component {
   }
 
   renderPlay(){
-    return this.state.previousQuestions.length === questionsPerPlay || this.state.forceEnd
-      ? this.renderFinalScore()
-      : this.state.showAnswer 
+    return this.state.previousQuestions.length === questionsPerPlay || this.state.forceEnd || Object.keys(this.state.currentQuestion).length === 0 ? this.renderFinalScore() : this.state.showAnswer 
         ? this.renderCorrectAnswer()
         : (
           <div className="quiz-play-holder">
