@@ -71,8 +71,7 @@ class QuizView extends Component {
         return;
       },
       error: (error) => {
-        console.log('Error')
-        //alert('Unable to load question. Please try your request again')
+        alert('Unable to load question. Please try your request again')
         return;
       }
     })

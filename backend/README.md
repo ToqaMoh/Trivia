@@ -72,20 +72,119 @@ This README is missing documentation of your endpoints. Below is an example for 
 
 Endpoints
 GET '/categories'
-GET ...
-POST ...
-DELETE ...
+GET '/questions'
+DELETE '/questions'
+POST '/questions'
+POST '/search_questions'
+GET '/categories/<int:category_id>/questions'
+POST '/quizzes'
+
 
 GET '/categories'
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
 - Request Arguments: None
-- Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs. 
-{'1' : "Science",
-'2' : "Art",
-'3' : "Geography",
-'4' : "History",
-'5' : "Entertainment",
-'6' : "Sports"}
+- Returns: An array of objects with a single key, categories, that contains a object of id: category_string key:value pairs. 
+
+categories: [
+    {'id' : 1, 'type': 'Science'},
+    {'id' : 2, 'type': 'Art'},
+    {'id' : 3, 'type': 'Geography'},
+    {'id' : 4, 'type': 'History'},
+    {'id' : 5, 'type': 'Entertainment'}
+    {'id' : 6, 'type': 'Sports'}
+]
+
+
+GET '/questions'
+- Fetches a dictionary of paginated questions, a dictionary of all the categories and the total number of questions
+- Request Arguments: page number 
+- Returns: An object with a three keys: 
+1) questions => contains an array of objects of id, question, answer, difficulty and category.
+2) categories => contains an array of objects of id: category_string key:value pairs. 
+3) total_questions => contains the number of all the questions in the database.
+
+questions: [
+    {'id' : 2, 'question': 'What movie earned Tom Hanks his third straight Oscar nomination, in 1996?', 'answer': 'Apollo 13', 'difficulty': 4, 'category': 5},
+    {'id' : 4, 'question': 'What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?', 'answer': 'Tom Cruise', 'difficulty': 4, 'category': 5}
+    ]
+
+categories: [
+    {'id' : 2, 'type': 'Art'},
+    {'id' : 5, 'type': 'Entertainment'}
+    ]
+
+total_questions: 2
+
+
+DELETE '/questions'
+- Deletes the required question by fetching it with the question_id 
+- Request Arguments: question_id
+- Returns: the deleted question id and the deleted message
+
+deleted: 5
+message: "Deleted Successfully"
+
+
+POST '/questions'
+- Creates the a new question 
+- Request Arguments: question, answer, difficulty ans category
+- Returns: the created question id, the paginated questions and the total number of questions in the database
+
+created: 5
+
+questions: [
+    {'id' : 2, 'question': 'What movie earned Tom Hanks his third straight Oscar nomination, in 1996?', 'answer': 'Apollo 13', 'difficulty': 4, 'category': 5},
+    {'id' : 4, 'question': 'What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?', 'answer': 'Tom Cruise', 'difficulty': 4, 'category': 5},
+    {'id' : 5, 'question': "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?", 'answer': 'Maya Angelou', 'difficulty': 2, 'category': 4}
+    ]
+
+total_questions: 3
+
+
+
+POST '/search_questions'
+- Searches through all the questions for the given search term
+- Request Arguments: search_term
+- Returns: All the questions that contain the search_term in the question and the total number of these questions
+
+questions: [
+    {'id' : 4, 'question': 'What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?', 'answer': 'Tom Cruise', 'difficulty': 4, 'category': 5},
+    {'id' : 5, 'question': "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?", 'answer': 'Maya Angelou', 'difficulty': 2, 'category': 4}
+    ]
+
+total_questions: 1
+
+
+
+GET '/categories/<int:category_id>/questions'
+- Fetches a dictionary of paginated questions where their category is the same as the provided category_id, the current category and the total number of questions in that category
+- Request Arguments: category_id
+- Returns: An object with a three keys: 
+1) questions => contains an array of objects of id, question, answer, difficulty and category.
+2) total_questions => contains the number of all the questions in the database.
+3) currentCategory => contains the id of the current category. 
+
+questions: [
+    {'id' : 2, 'question': 'What movie earned Tom Hanks his third straight Oscar nomination, in 1996?', 'answer': 'Apollo 13', 'difficulty': 4, 'category': 5},
+    {'id' : 4, 'question': 'What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?', 'answer': 'Tom Cruise', 'difficulty': 4, 'category': 5}
+    ]
+
+total_questions: 2
+
+currentCategory: 5
+
+
+POST '/quizzes'
+- Fetches the next question in the quiz according to the provided array of previous questions ids and the quiz category
+- Request Arguments: previous_questions, quiz_category
+- Returns: An Array of all previous questions ids and the next question to play 
+
+previousQuestions: [2, 5]
+
+question: {'id' : 4, 'question': 'What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?', 'answer': 'Tom Cruise', 'difficulty': 4, 'category': 5}
+
+
+
 
 ```
 
